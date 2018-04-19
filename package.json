@@ -1,0 +1,43 @@
+{
+  "name": "imagegallery",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "dotenv": "^5.0.1",
+    "exif": "^0.6.0",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "image-type": "^3.0.0",
+    "mongoose": "^5.0.12",
+    "morgan": "~1.9.0",
+    "multer": "^1.3.0",
+    "npm": "^5.8.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "progressbar": "^1.3.0",
+    "pug": "2.0.0-beta11"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-pug": "^1.1.1"
+  },
+  "description": "SSSF weekly assignments",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juliusn/imagegallery.git"
+  },
+  "author": "Julius Niiniranta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/juliusn/imagegallery/issues"
+  },
+  "homepage": "https://github.com/juliusn/imagegallery#readme"
+}

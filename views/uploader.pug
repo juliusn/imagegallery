@@ -1,0 +1,12 @@
+form.upload-form(method='POST', enctype='multipart/form-data')
+  p
+    input(type='file', name='image_file', required=true)
+  p
+    label Title: 
+    input(type='text', name='image_title', required=true, autocomplete='off')
+  p
+    button(type='submit').button-submit Submit
+    div.progress-circle.is-hiddenp
+    div.error.is-hidden
+      h3.error-header
+      p.error-description

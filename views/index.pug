@@ -1,0 +1,54 @@
+extends layout
+
+block content
+
+  h1= title
+  button(onclick='openModal()') Upload
+
+  div.is-hidden.modal-overlay
+    div.modal
+      span(class='button-close') x
+      include uploader
+
+  script.
+    const overlay = document.querySelector('.modal-overlay');
+    const uploadModal = new Modal(overlay);
+    window.openModal = uploadModal.open.bind(uploadModal);
+    window.closeModal = uploadModal.close.bind(uploadModal);
+
+    const closeButton = overlay.querySelector('.button-close');
+    const uploadForm = overlay.querySelector('.upload-form');
+    const progressCircle = uploadForm.querySelector('.progress-circle');
+    const error = uploadForm.querySelector('.error');
+    const errorHeader = error.querySelector('.error-header');
+    const errorDescription = error.querySelector('.error-description');
+    const submitButton = uploadForm.querySelector('.button-submit');
+
+    uploadForm.addEventListener('submit', function(submitEvent) {
+      submitEvent.preventDefault();
+      const uploadFormData = new FormData(uploadForm);
+      const request = new XMLHttpRequest();
+
+      request.onprogress = function(ev) {
+        error.classList.add('is-hidden');
+        submitButton.classList.add('is-hidden');
+        progressCircle.classList.remove('is-hidden');
+      };
+
+      request.onload = function(ev) {
+        submitButton.classList.remove('is-hidden');
+        progressCircle.classList.add('is-hidden');
+        if (request.status === 200) {
+          uploadForm.reset();
+          closeButton.click();
+        } else {
+          console.log(request.statusText);
+          errorHeader.innerHTML = `Attachment could not be uploaded.`;
+          errorDescription.innerHTML = `Error ${request.status}: ${request.statusText}`;
+          error.classList.remove('is-hidden');
+        }
+      };
+
+      request.open('POST', '/images', true);
+      request.send(uploadFormData);
+    });
