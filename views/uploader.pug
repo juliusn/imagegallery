@@ -1,12 +1,63 @@
-form.upload-form(method='POST', enctype='multipart/form-data')
-  p
-    input(type='file', name='image_file', required=true)
-  p
-    label Title: 
-    input(type='text', name='image_title', required=true, autocomplete='off')
-  p
-    button(type='submit').button-submit Submit
-    div.progress-circle.is-hiddenp
-    div.error.is-hidden
-      h3.error-header
-      p.error-description
+div.modal.fade#uploadModal(tabindex=-1, role='dialog', aria-labelledby='exampleModalLabel', aria-hidden=true)
+  div.modal-dialog(role='document')
+    div.modal-content
+      div.modal-header
+        h5.modal-title#exampleModalLabel Upload Image
+        button.close(type='button', data-dismiss='modal', aria-label='Close')
+          span(aria-hidden=true) &times;
+      div.modal-body
+        form.upload-form(method='POST', enctype='multipart/form-data')
+          p
+            input(type='file', name='image_file', required=true)
+          p
+            label Title:
+            input(type='text', name='image_title', required=true, autocomplete='off')
+          p
+            div.error.is-hidden
+              h3.error-header
+              p.error-description
+          p
+            button.btn.btn-primary.button-submit(type='submit') Submit
+            div.progress-circle.is-hidden
+
+          .upload-alert
+            +alert-danger
+
+      div.modal-footer
+        button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+
+  script.
+    const uploadModal = document.querySelector('#uploadModal');
+    const uploadForm = uploadModal.querySelector('.upload-form');
+    const progressCircle = uploadForm.querySelector('.progress-circle');
+    const submitButton = uploadForm.querySelector('.button-submit');
+    const uploadAlert = uploadForm.querySelector('.upload-alert .alert');
+    uploadAlert.style.display = 'none';
+
+    uploadForm.addEventListener('submit', function(submitEvent) {
+      submitEvent.preventDefault();
+      const uploadFormData = new FormData(uploadForm);
+      const request = new XMLHttpRequest();
+
+      request.onprogress = function(ev) {
+        $('.upload-alert .alert').fade;
+        submitButton.classList.add('is-hidden');
+        progressCircle.classList.remove('is-hidden');
+      };
+
+      request.onload = function(ev) {
+        submitButton.classList.remove('is-hidden');
+        progressCircle.classList.add('is-hidden');
+        if (request.status === 200) {
+          uploadForm.reset();
+          $('#uploadModal').modal('hide');
+        } else {
+          console.log(request.statusText);
+          $('.upload-alert .alert').text(`Error ${request.status}: ${request.statusText}.`);
+          $('.upload-alert .alert').show();
+        }
+      };
+
+      request.open('POST', '/images', true);
+      request.send(uploadFormData);
+    });

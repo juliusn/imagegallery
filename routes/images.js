@@ -30,7 +30,6 @@ router.post('/', upload, (req, res, next) => {
 
 router.post('/', upload, (req, res, next) => {
   new ExifImage({image: req.file.buffer}, (err, data) => {
-    if (err) console.log(err);
     req.body.exif = data;
     next();
   });

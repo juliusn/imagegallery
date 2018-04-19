@@ -27,6 +27,10 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/css',
+    express.static(path.join(__dirname, '/node_modules/pug-bootstrap/css')));
+app.use('/',
+    express.static(path.join(__dirname, '/node_modules/pug-bootstrap/')));
 
 // routing
 const indexRouter = require('./routes/index');
@@ -64,6 +68,5 @@ mongoose.connect(
         res.end();
       }).listen(8080);
     });
-
 
 module.exports = app;
