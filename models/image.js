@@ -8,6 +8,10 @@ const imageSchema = new mongoose.Schema({
       mime: String,
     },
   },
+  thumbnails: {
+    small: Buffer,
+    medium: Buffer,
+  },
   exifData: {},
 });
 
